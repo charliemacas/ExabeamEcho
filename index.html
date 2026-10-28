@@ -142,7 +142,9 @@
       <li><b>Add that collector to Echo as a webhook target.</b>
         Back in Echo, open <b>Settings</b> and add a new Webhook using the endpoint URL and Bearer token you just copied.
       </li>
-      <li><b>(Optional) Configure the Search API</b> in Settings if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in Cloud Collectors.</li>
+      <li><b>(Optional) Configure the Search API</b> in Settings if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in Cloud Collectors.
+        <span class="note">The OAuth client only needs <b>read-only Search</b> permission — Echo never writes to or modifies anything in your Exabeam tenant through this credential, only queries it.</span>
+      </li>
       <li><b>Pick a use case and replay it.</b> Choose one from the sidebar (organized by MITRE ATT&amp;CK tactic) and click <b>Replay All</b>. Watch the Replay tab for per-event HTTP status — if Search API is configured, verification starts automatically once events have had time to land.</li>
     </ol>
   </section>

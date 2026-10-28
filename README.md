@@ -33,6 +33,8 @@ No admin rights are required to install or run Echo on either platform, and it w
 
 4. **(Optional) Configure the Search API** in the same Settings pane if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in **Cloud Collectors**.
 
+   > The OAuth client only needs **read-only Search** permission — Echo never writes to or modifies anything in your Exabeam tenant through this credential, only queries it.
+
 5. **Pick a use case from the sidebar**, organized by MITRE ATT&CK tactic, and click **Replay All**. Watch the Replay tab for per-event HTTP status — if Search API is configured, verification starts automatically once your logs have had time to land.
 
 ---
