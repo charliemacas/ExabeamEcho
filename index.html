@@ -135,9 +135,12 @@
         On Windows, run the <code>.exe</code> and follow the installer. On macOS, open the <code>.dmg</code> and drag Exabeam Echo into Applications.
         <span class="note">macOS: if you see <i>"cannot be opened because the developer cannot be verified,"</i> open <b>System Settings → Privacy &amp; Security</b> and click <b>Open Anyway</b> next to the app name, then open it again. This is a one-time step per install — the build is ad-hoc signed but not yet notarized with an Apple Developer ID.</span>
       </li>
-      <li><b>Add a webhook target.</b>
-        Open <b>Settings</b> and add a Webhook pointing at your Exabeam Cloud Collector's endpoint URL, with its Bearer token if required.
-        <span class="note">Use a <code>raw</code>-format collector, not a <code>json</code>-format one. Echo always sends events as plain text, and a <code>raw</code> collector accepts any body — a <code>json</code>-format collector will reject anything that isn't valid JSON. One <code>raw</code> collector covers the entire bundled library.</span>
+      <li><b>Create a Webhook Cloud Collector in Exabeam, in <code>RAW</code> format.</b>
+        In your Exabeam tenant, go to <b>Collectors → Cloud Collectors → New Collector → Webhook</b>, give it a name, and for <b>Format</b> choose <code>RAW</code> — not <code>Json</code>. Click <b>Install</b>, then copy the Bearer token and endpoint URL shown on the install screen; you'll need both in the next step.
+        <span class="note"><b>Why RAW, not Json:</b> Echo always sends events as plain text. A <code>RAW</code> collector accepts any body — plain text, JSON, XML, whatever the use case contains — while a <code>Json</code> collector rejects anything that isn't valid JSON with an HTTP 400. One <code>RAW</code> collector covers the entire bundled library, so you only need to do this once.</span>
+      </li>
+      <li><b>Add that collector to Echo as a webhook target.</b>
+        Back in Echo, open <b>Settings</b> and add a new Webhook using the endpoint URL and Bearer token you just copied.
       </li>
       <li><b>(Optional) Configure the Search API</b> in Settings if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in Cloud Collectors.</li>
       <li><b>Pick a use case and replay it.</b> Choose one from the sidebar (organized by MITRE ATT&amp;CK tactic) and click <b>Replay All</b>. Watch the Replay tab for per-event HTTP status — if Search API is configured, verification starts automatically once events have had time to land.</li>

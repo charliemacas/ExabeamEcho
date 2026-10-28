@@ -25,13 +25,15 @@ No admin rights are required to install or run Echo on either platform, and it w
    - *Windows:* run the `.exe`, follow the installer, then launch from the Start Menu or desktop shortcut.
    - *macOS:* open the `.dmg` and drag **Exabeam Echo** into **Applications**. If Gatekeeper blocks it with *"cannot be opened because the developer cannot be verified,"* open **System Settings → Privacy & Security** and click **Open Anyway**, then open it again — a one-time step per install.
 
-2. **Add a webhook target.** Open **Settings** and add a Webhook pointing at your Exabeam Cloud Collector's endpoint URL, with its Bearer token if the collector requires one.
+2. **Create a Webhook Cloud Collector in Exabeam, in `RAW` format.** In your Exabeam tenant, go to **Collectors → Cloud Collectors → New Collector → Webhook**, give it a name, and for **Format** choose `RAW` — not `Json`. Click **Install**, then copy the Bearer token and endpoint URL shown on the install screen.
 
-   > **Use a `raw`-format collector, not a `json`-format one.** Echo always sends events as plain text, and a `raw` collector accepts any body — plain text, JSON, XML, whatever the use case contains — while a `json`-format collector will reject anything that isn't valid JSON with an HTTP 400. A single `raw` collector is all you need for the entire bundled library.
+   > **Why `RAW`, not `Json`:** Echo always sends events as plain text, and a `RAW` collector accepts any body — plain text, JSON, XML, whatever the use case contains — while a `Json` collector rejects anything that isn't valid JSON with an HTTP 400. One `RAW` collector covers the entire bundled library, so you only need to do this once.
 
-3. **(Optional) Configure the Search API** in the same Settings pane if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in **Cloud Collectors**.
+3. **Add that collector to Echo as a webhook target.** Back in Echo, open **Settings** and add a new Webhook using the endpoint URL and Bearer token you just copied.
 
-4. **Pick a use case from the sidebar**, organized by MITRE ATT&CK tactic, and click **Replay All**. Watch the Replay tab for per-event HTTP status — if Search API is configured, verification starts automatically once your logs have had time to land.
+4. **(Optional) Configure the Search API** in the same Settings pane if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in **Cloud Collectors**.
+
+5. **Pick a use case from the sidebar**, organized by MITRE ATT&CK tactic, and click **Replay All**. Watch the Replay tab for per-event HTTP status — if Search API is configured, verification starts automatically once your logs have had time to land.
 
 ---
 
