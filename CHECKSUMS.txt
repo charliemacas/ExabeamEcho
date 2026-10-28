@@ -1,0 +1,8 @@
+# Exabeam Echo — release checksums
+# Verify with:
+#   Windows (PowerShell): Get-FileHash ".\Exabeam Echo Setup <version>.exe" -Algorithm SHA256
+#   macOS/Linux:           shasum -a 256 "Exabeam Echo-<version>.dmg"
+
+## v1.0.3 — 2026-10-28
+Exabeam Echo Setup 1.0.3.exe  SHA256  192841817EBA6BC400BB3B61D9F5F04A348BB7CA2DDDA3BACA3365CE9816D231
+Exabeam Echo-1.0.3.dmg        SHA256  (pending — macOS build not yet published)

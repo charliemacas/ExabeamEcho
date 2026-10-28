@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exabeam Echo</title>
+<meta name="description" content="A desktop tool for replaying realistic security event log use cases against an Exabeam Webhook Collector — validate correlation rules and demonstrate detections without live infrastructure.">
+<link rel="icon" href="assets/logo.png">
+<style>
+  :root{
+    --bg:#f6f7f9; --bg-raised:#ffffff; --text:#1a1d23; --text-dim:#5b616e;
+    --border:#e3e5e9; --accent:#0a5fcf; --accent-dim:#eaf1fd; --accent-text:#ffffff;
+    --code-bg:#eef0f3; --shadow:0 1px 3px rgba(20,20,30,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14161a; --bg-raised:#1c1f25; --text:#eef0f3; --text-dim:#9aa1ad;
+      --border:#2a2e36; --accent:#4d9bff; --accent-dim:#1b2a40; --accent-text:#0b1220;
+      --code-bg:#24272e; --shadow:0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161a; --bg-raised:#1c1f25; --text:#eef0f3; --text-dim:#9aa1ad;
+    --border:#2a2e36; --accent:#4d9bff; --accent-dim:#1b2a40; --accent-text:#0b1220;
+    --code-bg:#24272e; --shadow:0 1px 3px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+  header.site{display:flex;align-items:center;gap:12px;padding:20px 0;}
+  header.site img{width:36px;height:36px;border-radius:8px;}
+  header.site .name{font-weight:700;font-size:18px;}
+  nav.site{margin-left:auto;display:flex;gap:20px;font-size:14px;}
+  nav.site a{color:var(--text-dim);text-decoration:none;}
+  nav.site a:hover{color:var(--text);}
+
+  .hero{padding:56px 0 40px;text-align:center;}
+  .hero h1{font-size:clamp(28px,5vw,42px);margin:0 0 12px;letter-spacing:-.02em;}
+  .hero p.tagline{color:var(--text-dim);font-size:18px;max-width:640px;margin:0 auto 28px;}
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent;}
+  .btn-primary{background:var(--accent);color:var(--accent-text);box-shadow:var(--shadow);}
+  .btn-secondary{background:var(--bg-raised);color:var(--text);border-color:var(--border);}
+  .btn[aria-disabled="true"]{opacity:.5;pointer-events:none;}
+  .hero .sub-link{font-size:13px;color:var(--text-dim);}
+  .hero .sub-link a{color:var(--text-dim);}
+
+  .hero-img{width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);margin:36px 0 0;}
+  .hero-img img{display:block;width:100%;height:auto;}
+
+  section{padding:48px 0;border-top:1px solid var(--border);}
+  section h2{font-size:24px;margin:0 0 24px;}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+  .card{background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;padding:18px 20px;}
+  .card h3{margin:0 0 6px;font-size:15px;}
+  .card p{margin:0;color:var(--text-dim);font-size:14px;}
+
+  .steps{counter-reset:step;list-style:none;margin:0;padding:0;}
+  .steps li{counter-increment:step;position:relative;padding:0 0 22px 44px;}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--accent-dim);color:var(--accent);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .steps li b{display:block;margin-bottom:2px;}
+  .steps li .note{display:block;margin-top:6px;font-size:13px;color:var(--text-dim);background:var(--code-bg);border-radius:8px;padding:10px 12px;}
+
+  table.checksums{width:100%;border-collapse:collapse;font-size:13px;}
+  table.checksums th,table.checksums td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border);}
+  table.checksums th{color:var(--text-dim);font-weight:600;}
+  table.checksums code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;word-break:break-all;}
+  .pending{color:var(--text-dim);font-style:italic;}
+
+  footer{padding:32px 0 48px;color:var(--text-dim);font-size:13px;}
+  footer a{color:var(--text-dim);}
+
+  @media (max-width:600px){ nav.site{display:none;} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site">
+    <img src="assets/logo.png" alt="Exabeam Echo logo">
+    <span class="name">Exabeam Echo</span>
+    <nav class="site">
+      <a href="#download">Download</a>
+      <a href="#getting-started">Getting started</a>
+      <a href="#features">Features</a>
+    </nav>
+  </header>
+
+  <section class="hero" style="border-top:none;padding-top:20px;">
+    <h1>Replay real detections. No infrastructure required.</h1>
+    <p class="tagline">A desktop tool for replaying realistic, MITRE ATT&amp;CK-tagged security event log use cases against an Exabeam Webhook Collector — validate correlation rules, test parsers, and demonstrate detections without live infrastructure or a real attack.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/charliemacas/ExabeamEcho/releases/latest" id="btn-win">Download for Windows</a>
+      <a class="btn btn-secondary" aria-disabled="true" href="#" id="btn-mac">Download for macOS (coming soon)</a>
+    </div>
+    <p class="sub-link">Free to download and use · <a href="#checksums">verify the download</a> · <a href="#license">usage terms</a></p>
+    <div class="hero-img"><img src="assets/hero.jpg" alt="Exabeam Echo application screenshot"></div>
+  </section>
+
+  <section id="features">
+    <h2>What you can do with it</h2>
+    <div class="grid">
+      <div class="card"><h3>Hundreds of ready-made use cases</h3><p>Realistic, vendor-accurate log samples spanning Windows, AWS, Azure, GCP, M365, Google Workspace, Okta, Duo, and more — tagged by MITRE ATT&amp;CK tactic. Nothing to author yourself.</p></div>
+      <div class="card"><h3>One-click replay</h3><p><b>Replay All</b>, <b>Replay Selected</b>, or run a whole tactic folder in sequence with the ▶ button on its header.</p></div>
+      <div class="card"><h3>Realistic timing</h3><p>Set a global delay between events, or a per-event delay to simulate a real attack's pacing.</p></div>
+      <div class="card"><h3>Multiple targets</h3><p>Dev / UAT / Production, or separate tenants — each use case remembers which target it last used.</p></div>
+      <div class="card"><h3>Auto-timestamping</h3><p>Every replayed log's timestamp is rewritten to <i>now</i>, so it shows up as live traffic in your SIEM regardless of when the sample was captured.</p></div>
+      <div class="card"><h3>Verify in Exabeam</h3><p>Query the Search API after a replay to confirm events landed and parsed, with per-field inspection and saved verify history.</p></div>
+      <div class="card"><h3>Bring your own logs</h3><p>Import from <code>.log</code>/<code>.txt</code>, <code>.csv</code>, <code>.json</code>, or paste directly, alongside the bundled library.</p></div>
+      <div class="card"><h3>Backup &amp; restore</h3><p>Back up your whole library — use cases, folders, webhooks, settings — as a single file, and restore it later.</p></div>
+    </div>
+  </section>
+
+  <section id="getting-started">
+    <h2>Getting started</h2>
+    <ol class="steps">
+      <li><b>Install and open Echo.</b>
+        On Windows, run the <code>.exe</code> and follow the installer. On macOS, open the <code>.dmg</code> and drag Exabeam Echo into Applications.
+        <span class="note">macOS: if you see <i>"cannot be opened because the developer cannot be verified,"</i> open <b>System Settings → Privacy &amp; Security</b> and click <b>Open Anyway</b> next to the app name, then open it again. This is a one-time step per install — the build is ad-hoc signed but not yet notarized with an Apple Developer ID.</span>
+      </li>
+      <li><b>Add a webhook target.</b>
+        Open <b>Settings</b> and add a Webhook pointing at your Exabeam Cloud Collector's endpoint URL, with its Bearer token if required.
+        <span class="note">Use a <code>raw</code>-format collector, not a <code>json</code>-format one. Echo always sends events as plain text, and a <code>raw</code> collector accepts any body — a <code>json</code>-format collector will reject anything that isn't valid JSON. One <code>raw</code> collector covers the entire bundled library.</span>
+      </li>
+      <li><b>(Optional) Configure the Search API</b> in Settings if you want Echo to confirm, after each replay, that your logs actually landed and parsed. This needs OAuth client credentials from your Exabeam tenant and the name you gave the collector in Cloud Collectors.</li>
+      <li><b>Pick a use case and replay it.</b> Choose one from the sidebar (organized by MITRE ATT&amp;CK tactic) and click <b>Replay All</b>. Watch the Replay tab for per-event HTTP status — if Search API is configured, verification starts automatically once events have had time to land.</li>
+    </ol>
+  </section>
+
+  <section id="download">
+    <h2>Download &amp; verify</h2>
+    <p>Always verify the SHA256 checksum of what you downloaded matches the value below before running an installer from any source, including this one.</p>
+    <table class="checksums" id="checksums">
+      <thead><tr><th>Platform</th><th>File</th><th>SHA256</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Windows</td>
+          <td><code>Exabeam Echo Setup 1.0.3.exe</code></td>
+          <td><code>192841817EBA6BC400BB3B61D9F5F04A348BB7CA2DDDA3BACA3365CE9816D231</code></td>
+        </tr>
+        <tr>
+          <td>macOS</td>
+          <td colspan="2" class="pending">Build pending — check back soon, or watch the Releases page.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--text-dim);">PowerShell: <code>Get-FileHash ".\Exabeam Echo Setup 1.0.3.exe" -Algorithm SHA256</code> &nbsp;·&nbsp; macOS/Linux: <code>shasum -a 256 "Exabeam Echo-1.0.3.dmg"</code></p>
+  </section>
+
+  <section id="license">
+    <h2>Usage terms</h2>
+    <p>Exabeam Echo is free to download and use. See <a href="LICENSE.md">LICENSE.md</a> for the full terms — in short: don't repackage, rebrand, or redistribute it as your own work, and don't strip attribution. "Exabeam" is a trademark of its respective owner; this is an independent, unofficial community tool and isn't published or endorsed by Exabeam.</p>
+  </section>
+
+  <footer>
+    <p>© 2026 Exabeam Echo. Built by <a href="https://github.com/charliemacas">Charlie MacArthur</a>. Not affiliated with or endorsed by Exabeam.</p>
+  </footer>
+</div>
+
+</body>
+</html>
