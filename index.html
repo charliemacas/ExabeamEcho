@@ -30,9 +30,11 @@
   header.site{display:flex;align-items:center;gap:12px;padding:20px 0;}
   header.site img{width:36px;height:36px;border-radius:8px;}
   header.site .name{font-weight:700;font-size:18px;}
-  nav.site{margin-left:auto;display:flex;gap:20px;font-size:14px;}
+  nav.site{margin-left:auto;display:flex;gap:20px;font-size:14px;align-items:center;}
   nav.site a{color:var(--text-dim);text-decoration:none;}
   nav.site a:hover{color:var(--text);}
+  .theme-toggle{margin-left:auto;background:var(--bg-raised);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer;color:var(--text);}
+  @media (max-width:600px){ .theme-toggle{margin-left:auto;} }
 
   .hero{padding:56px 0 40px;text-align:center;}
   .hero h1{font-size:clamp(28px,5vw,42px);margin:0 0 12px;letter-spacing:-.02em;}
@@ -47,6 +49,15 @@
 
   .hero-img{width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);margin:36px 0 0;}
   .hero-img img{display:block;width:100%;height:auto;}
+  .hero-img .shot-dark{display:none;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .hero-img .shot-light{display:none;}
+    :root:not([data-theme="light"]) .hero-img .shot-dark{display:block;}
+  }
+  :root[data-theme="dark"] .hero-img .shot-light{display:none;}
+  :root[data-theme="dark"] .hero-img .shot-dark{display:block;}
+  :root[data-theme="light"] .hero-img .shot-light{display:block;}
+  :root[data-theme="light"] .hero-img .shot-dark{display:none;}
 
   section{padding:48px 0;border-top:1px solid var(--border);}
   section h2{font-size:24px;margin:0 0 24px;}
@@ -85,6 +96,7 @@
       <a href="#getting-started">Getting started</a>
       <a href="#features">Features</a>
     </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light/dark preview">☀/☾</button>
   </header>
 
   <section class="hero" style="border-top:none;padding-top:20px;">
@@ -95,7 +107,11 @@
       <a class="btn btn-secondary" aria-disabled="true" href="#" id="btn-mac">Download for macOS (coming soon)</a>
     </div>
     <p class="sub-link">Free to download and use · <a href="#checksums">verify the download</a> · <a href="#license">usage terms</a> · <a href="https://github.com/charliemacas/ExabeamEcho/releases/latest">all releases</a></p>
-    <div class="hero-img"><img src="assets/hero.jpg" alt="Exabeam Echo application screenshot"></div>
+    <div class="hero-img">
+      <img src="assets/screenshot-light.png" alt="Exabeam Echo application screenshot, light theme" class="shot shot-light">
+      <img src="assets/screenshot-dark.png" alt="Exabeam Echo application screenshot, dark theme" class="shot shot-dark">
+    </div>
+    <p class="sub-link" style="margin-top:10px;">Echo's own Log Editor — pick a use case, review the raw events, hit Replay.</p>
   </section>
 
   <section id="features">
@@ -158,5 +174,24 @@
   </footer>
 </div>
 
+<script>
+(function(){
+  try {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    var saved = localStorage.getItem('echo-theme-preview');
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+    btn.addEventListener('click', function(){
+      var current = root.getAttribute('data-theme');
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var next;
+      if (!current) next = prefersDark ? 'light' : 'dark';
+      else next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('echo-theme-preview', next); } catch (e) {}
+    });
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
