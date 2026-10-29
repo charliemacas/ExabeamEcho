@@ -13,7 +13,9 @@ Echo ships with a built-in library of several hundred MITRE ATT&CK-tagged use ca
 Grab the latest installer from the [Releases page](https://github.com/charliemacas/ExabeamEcho/releases/latest):
 
 - **Windows:** `Exabeam Echo Setup <version>.exe`
-- **macOS:** `Exabeam Echo-<version>.dmg` (coming soon)
+- **macOS:** `Exabeam Echo-<version>.dmg` — download the one matching your Mac's chip (Apple menu → **About This Mac** → look for "Apple" or "Intel" next to Chip/Processor):
+  - **Apple Silicon (M1/M2/M3/M4):** the `arm64` build
+  - **Intel:** the plain (non-`arm64`) build
 
 No admin rights are required to install or run Echo on either platform, and it writes no registry entries — everything it stores lives in your own user profile. Always verify the SHA256 checksum against the [landing page](https://charliemacas.github.io/ExabeamEcho/#checksums) before running an installer.
 
